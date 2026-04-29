@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -95,7 +95,7 @@ body {
   --sidebar-ring: oklch(0.708 0 0);
 
   --font-sans: Inter, sans-serif;
-  --font-feature-settings: "liga" 1, "calt" 1; /* fix for Chrome */
+  --font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
 }
 
 @supports (font-variation-settings: normal) {
@@ -149,7 +149,7 @@ body {
     @apply font-sans;
   }
   button:not(:disabled),
-  [role="button"]:not(:disabled) {
+  [role='button']:not(:disabled) {
     cursor: pointer;
   }
 }

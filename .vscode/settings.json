@@ -29,7 +29,7 @@
     "source.fixAll.oxc": "explicit"
   },
   "files.associations": {
-    ".css": "tailwindcss"
+    "*.css": "tailwindcss"
   },
   "editor.quickSuggestions": {
     "strings": "on"
