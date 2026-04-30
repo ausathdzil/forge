@@ -34,5 +34,5 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "tailwindCSS.classFunctions": ["cn", "cva"]
+  "tailwindCSS.classFunctions": ["clsx", "cn", "cva"]
 }

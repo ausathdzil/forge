@@ -13,8 +13,16 @@ const config = defineConfig({
     singleQuote: true,
     semi: false,
     sortImports: true,
+    ignorePatterns: ['drizzle', 'src/components/ui/**'],
+    sortTailwindcss: {
+      stylesheet: 'src/styles.css',
+      functions: ['clsx', 'cn', 'cva'],
+    },
   },
-  lint: { options: { typeAware: true, typeCheck: true } },
+  lint: {
+    options: { typeAware: true, typeCheck: true },
+    ignorePatterns: ['drizzle', 'src/components/ui/**'],
+  },
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
