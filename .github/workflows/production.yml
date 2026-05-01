@@ -86,8 +86,12 @@ jobs:
 
             ln -sfn \$NEW \$APP/current
 
-            pm2 startOrReload \$APP/shared/ecosystem.config.cjs
-            pm2 save
+            pm2 restart forge --update-env
 
-            rm -rf /tmp/forge.tar.gz
+            timeout 30 bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
+
+            pm2 save
+            rm -f /tmp/forge.tar.gz
+
+            ls -dt \$APP/releases/*/ | tail -n +6 | xargs rm -rf
           EOF
