@@ -28,6 +28,7 @@ export function SignInForm() {
     defaultValues: {
       email: '',
       password: '',
+      rememberMe: false,
     },
     validators: {
       onSubmit: signinFormSchema,
@@ -132,10 +133,27 @@ export function SignInForm() {
             )
           }}
         />
-        <Field orientation="horizontal">
-          <Checkbox />
-          <FieldLabel className="font-normal">Remember Me</FieldLabel>
-        </Field>
+        <form.Field
+          name="rememberMe"
+          children={(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            return (
+              <Field data-invalid={isInvalid} orientation="horizontal">
+                <Checkbox
+                  aria-invalid={isInvalid}
+                  checked={field.state.value}
+                  id={field.name}
+                  name={field.name}
+                  onCheckedChange={(checked) => field.handleChange(checked === true)}
+                />
+                <FieldLabel className="font-normal" htmlFor={field.name}>
+                  Remember Me
+                </FieldLabel>
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
+          }}
+        />
         <Field>
           <Button type="submit" disabled={isLoading}>
             Sign In

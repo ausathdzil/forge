@@ -27,4 +27,5 @@ export const signinFormSchema = z.object({
     .email('Please enter a valid email.')
     .check(z.trim(), z.maxLength(255, 'Email must be 255 characters or fewer.')),
   password: z.string().check(z.maxLength(128, 'Password must be 128 characters or fewer.')),
+  rememberMe: z.boolean(),
 })
