@@ -12,7 +12,9 @@ export function Header() {
           Forge
         </Button>
         <div className="ml-auto hidden items-center gap-4 sm:flex">
-          <Button>Sign In</Button>
+          <Button render={<Link to="/sign-in" />} nativeButton={false}>
+            Sign In
+          </Button>
         </div>
       </div>
     </header>

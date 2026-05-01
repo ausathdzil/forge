@@ -2,8 +2,6 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
-import { Header } from '#/components/header'
-
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
@@ -39,10 +37,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </head>
       <body>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          {children}
-        </div>
+        {children}
         <TanStackDevtools
           config={{
             position: 'bottom-right',
