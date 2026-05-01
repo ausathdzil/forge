@@ -9,7 +9,6 @@ on:
       - 'drizzle/**'
       - 'public/**'
       - 'src/**'
-      - 'cta.json'
       - 'bun.lock'
       - 'drizzle.config.ts'
       - 'package.json'
