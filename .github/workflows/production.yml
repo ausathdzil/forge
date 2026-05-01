@@ -34,12 +34,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Set up Vite Plus
         uses: voidzero-dev/setup-vp@v1
         with:
           node-version: 22
           cache: true
+
+      - name: Detect migration changes
+        id: migrate_changes
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            migrate:
+              - 'drizzle/**'
+              - 'drizzle.config.ts'
+              - 'package.json'
+              - 'bun.lock'
 
       - name: Install dependencies
         run: vp install
@@ -61,6 +74,7 @@ jobs:
         env:
           HOST: ${{ secrets.TAILNET_HOST }}
           USERNAME: ${{ secrets.SSH_USER }}
+          RUN_MIGRATIONS: ${{ steps.migrate_changes.outputs.migrate == 'true' }}
         run: |
           RELEASE=$(date +%Y%m%d-%H%M%S)
 
@@ -81,8 +95,12 @@ jobs:
             source \$APP/shared/.env
             set +a
 
-            vp install --frozen-lockfile
-            vpx drizzle-kit migrate
+            if [ "$RUN_MIGRATIONS" = "true" ]; then
+              vp install --frozen-lockfile
+              vpx drizzle-kit migrate
+            else
+              echo "Skipping install + migrations (no drizzle-related changes)."
+            fi
 
             ln -sfn \$NEW \$APP/current
 
