@@ -1,0 +1,93 @@
+name: Azure Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/**'
+      - 'drizzle/**'
+      - 'public/**'
+      - 'src/**'
+      - 'cta.json'
+      - 'bun.lock'
+      - 'drizzle.config.ts'
+      - 'package.json'
+      - 'tsconfig.json'
+      - 'vite.config.ts'
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+  Deploy-Production:
+    runs-on: ubuntu-latest
+    environment:
+      name: Production
+      url: ${{ vars.APP_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Vite Plus
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: 22
+          cache: true
+
+      - name: Install dependencies
+        run: vp install
+
+      - name: Build
+        run: vp build
+
+      - name: Archive build
+        run: tar -czf forge.tar.gz .output drizzle drizzle.config.ts package.json bun.lock
+
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-client-secret: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
+          tags: tag:ci
+
+      - name: Deploy to Azure VM
+        env:
+          HOST: ${{ secrets.TAILNET_HOST }}
+          USERNAME: ${{ secrets.SSH_USER }}
+        run: |
+          RELEASE=$(date +%Y%m%d-%H%M%S)
+
+          scp -o StrictHostKeyChecking=no forge.tar.gz $USERNAME@$HOST:/tmp/
+
+          ssh -o StrictHostKeyChecking=no $USERNAME@$HOST << EOF
+            set -e
+
+            APP=/srv/forge
+            NEW=\$APP/releases/$RELEASE
+
+            mkdir -p \$NEW
+            tar -xzf /tmp/forge.tar.gz -C \$NEW
+
+            cd \$NEW
+            
+            set -a
+            source \$APP/shared/.env
+            set +a
+
+            vp install --frozen-lockfile
+            vpx drizzle-kit migrate
+
+            ln -sfn \$NEW \$APP/current
+
+            pm2 startOrReload \$APP/shared/ecosystem.config.cjs
+            pm2 save
+
+            rm -rf /tmp/forge.tar.gz
+          EOF

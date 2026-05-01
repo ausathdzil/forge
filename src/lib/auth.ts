@@ -10,7 +10,7 @@ export const auth = betterAuth({
     provider: 'pg',
     schema,
   }),
-  baseURL: 'http://localhost:3000/',
+  baseURL: process.env.BETTER_AUTH_BASE_URL,
   emailAndPassword: {
     enabled: true,
   },
