@@ -33,13 +33,15 @@ export function SignUpForm() {
       onSubmit: signupFormSchema,
     },
     onSubmit: async ({ value }) => {
+      setServerError(null)
+
       const { error } = await signUp.email(value, {
         onRequest: () => {
           setIsLoading(true)
         },
         onSuccess: () => {
           setIsLoading(false)
-          void navigate({ to: '/sign-in' })
+          void navigate({ to: '/' })
         },
         onError: () => {
           setIsLoading(false)
@@ -47,7 +49,7 @@ export function SignUpForm() {
       })
 
       if (error) {
-        setServerError(error.message || null)
+        setServerError(error.message || 'An unexpected error occurred.')
       }
     },
     onSubmitInvalid() {
