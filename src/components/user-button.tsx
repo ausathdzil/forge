@@ -4,22 +4,34 @@ import { useSession } from '#/lib/auth-client'
 
 import { ModeToggle } from './mode-toggle'
 import { Button } from './ui/button'
+import { Skeleton } from './ui/skeleton'
 import { UserDropdown } from './user-dropdown'
 
 export function UserButton() {
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
 
-  return session ? (
-    <UserDropdown user={session.user} />
-  ) : (
+  if (isPending) {
+    return <Skeleton className="ml-auto h-8 w-60 rounded-full" />
+  }
+
+  return (
     <div className="ml-auto hidden items-center gap-4 sm:flex">
-      <Button render={<Link to="/sign-in" />} nativeButton={false} variant="secondary">
-        Sign In
-      </Button>
-      <Button render={<Link to="/sign-up" />} nativeButton={false}>
-        Get Started
-      </Button>
-      <ModeToggle />
+      {session ? (
+        <>
+          <p className="text-sm font-medium">👋 Hey, {session.user.name}!</p>
+          <UserDropdown user={session.user} />
+        </>
+      ) : (
+        <>
+          <Button render={<Link to="/sign-in" />} nativeButton={false} variant="secondary">
+            Sign In
+          </Button>
+          <Button render={<Link to="/sign-up" />} nativeButton={false}>
+            Get Started
+          </Button>
+          <ModeToggle />
+        </>
+      )}
     </div>
   )
 }
