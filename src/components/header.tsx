@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { AnvilIcon } from 'lucide-react'
 
+import { ModeToggle } from './mode-toggle'
 import { Button } from './ui/button'
 
 export function Header() {
@@ -12,9 +13,13 @@ export function Header() {
           Forge
         </Button>
         <div className="ml-auto hidden items-center gap-4 sm:flex">
-          <Button render={<Link to="/sign-in" />} nativeButton={false}>
+          <Button render={<Link to="/sign-in" />} nativeButton={false} variant="secondary">
             Sign In
           </Button>
+          <Button render={<Link to="/sign-up" />} nativeButton={false}>
+            Get Started
+          </Button>
+          <ModeToggle />
         </div>
       </div>
     </header>
