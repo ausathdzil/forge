@@ -15,7 +15,7 @@ export function UserButton() {
   }
 
   return (
-    <div className="ml-auto hidden items-center gap-4 sm:flex">
+    <div className="ml-auto flex items-center gap-4">
       {session ? (
         <>
           <p className="text-sm font-medium">👋 Hey, {session.user.name}!</p>
@@ -23,7 +23,12 @@ export function UserButton() {
         </>
       ) : (
         <>
-          <Button render={<Link to="/sign-in" />} nativeButton={false} variant="secondary">
+          <Button
+            className="hidden sm:block"
+            render={<Link to="/sign-in" />}
+            nativeButton={false}
+            variant="secondary"
+          >
             Sign In
           </Button>
           <Button render={<Link to="/sign-up" />} nativeButton={false}>
