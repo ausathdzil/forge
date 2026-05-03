@@ -38,7 +38,7 @@ export function UserDropdown({ user }: { user: User }) {
           <DropdownMenuLabel className="p-0 font-normal">
             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
               <Avatar>
-                <AvatarImage alt={user.name} src={user.image ?? ''} />
+                <AvatarImage alt={user.name} src={user.image ?? undefined} />
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
