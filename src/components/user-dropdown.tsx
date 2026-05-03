@@ -3,7 +3,7 @@ import { HomeIcon, LogOutIcon, UserCircle2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import type { authClient } from '#/lib/auth-client'
+import type { User } from '#/lib/auth-client'
 import { signOut } from '#/lib/auth-client'
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
@@ -18,8 +18,6 @@ import {
 } from './ui/dropdown-menu'
 import { Spinner } from './ui/spinner'
 import { UserModeToggle } from './user-mode-toggle'
-
-type User = (typeof authClient.$Infer.Session)['user']
 
 export function UserDropdown({ user }: { user: User }) {
   const [isLoading, setIsLoading] = useState(false)
