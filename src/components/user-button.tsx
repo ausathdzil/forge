@@ -24,7 +24,7 @@ export function UserButton() {
       ) : (
         <>
           <Button
-            className="hidden sm:block"
+            className="hidden sm:flex"
             render={<Link to="/sign-in" />}
             nativeButton={false}
             variant="secondary"
