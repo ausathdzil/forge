@@ -11,7 +11,7 @@ export function UserButton() {
   const { data: session, isPending } = useSession()
 
   if (isPending) {
-    return <Skeleton className="ml-auto h-8 w-60 rounded-full" />
+    return <Skeleton className="ml-auto h-8 w-40 rounded-full sm:w-60" />
   }
 
   return (
