@@ -1,5 +1,5 @@
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
-import { betterAuth } from 'better-auth'
+import { betterAuth } from 'better-auth/minimal'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 
 import { db } from '#/db'

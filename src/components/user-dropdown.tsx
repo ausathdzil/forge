@@ -48,7 +48,7 @@ export function UserDropdown({ user }: { user: User }) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem render={<Link to="/" />}>
+          <DropdownMenuItem render={<Link to="/profile" />}>
             Profile
             <UserCircle2Icon className="ml-auto" />
           </DropdownMenuItem>
