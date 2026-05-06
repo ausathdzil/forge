@@ -1,19 +1,16 @@
-import { Link } from '@tanstack/react-router'
-import { AnvilIcon } from 'lucide-react'
+import { cn } from '#/lib/utils'
 
-import { Button } from './ui/button'
-import { UserButton } from './user-button'
+function Header({ className, ...props }: React.ComponentProps<'header'>) {
+  return <header className={cn('sticky top-0 z-10 bg-background', className)} {...props} />
+}
 
-export function Header() {
+function HeaderContent({ className, ...props }: React.ComponentProps<'div'>) {
   return (
-    <header className="pt-safe-top sticky top-0 z-10 bg-background">
-      <div className="mx-auto flex w-full max-w-6xl items-center p-4 sm:gap-4">
-        <Button variant="ghost" render={<Link to="/" />} nativeButton={false}>
-          <AnvilIcon />
-          Forge
-        </Button>
-        <UserButton />
-      </div>
-    </header>
+    <div
+      className={cn('mx-auto flex w-full max-w-6xl items-center p-4 sm:gap-4', className)}
+      {...props}
+    />
   )
 }
+
+export { Header, HeaderContent }

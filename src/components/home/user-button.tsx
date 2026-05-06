@@ -2,9 +2,9 @@ import { Link } from '@tanstack/react-router'
 
 import { useSession } from '#/lib/auth-client'
 
+import { Button } from '../ui/button'
+import { Skeleton } from '../ui/skeleton'
 import { ModeToggle } from './mode-toggle'
-import { Button } from './ui/button'
-import { Skeleton } from './ui/skeleton'
 import { UserDropdown } from './user-dropdown'
 
 export function UserButton() {

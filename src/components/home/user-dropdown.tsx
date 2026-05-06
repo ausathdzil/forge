@@ -1,12 +1,9 @@
-import { Link, useNavigate } from '@tanstack/react-router'
-import { HomeIcon, LogOutIcon, UserCircle2Icon } from 'lucide-react'
-import { useState } from 'react'
-import { toast } from 'sonner'
+import { Link } from '@tanstack/react-router'
+import { HomeIcon, UserCircle2Icon } from 'lucide-react'
 
 import type { User } from '#/lib/auth-client'
-import { signOut } from '#/lib/auth-client'
 
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,14 +12,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
-import { Spinner } from './ui/spinner'
+} from '../ui/dropdown-menu'
+import { SignOutButton } from './sign-out-button'
 import { UserModeToggle } from './user-mode-toggle'
 
 export function UserDropdown({ user }: { user: User }) {
-  const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger aria-label="Menu" title="Menu" className="ml-auto">
@@ -63,34 +57,7 @@ export function UserDropdown({ user }: { user: User }) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            closeOnClick={false}
-            disabled={isLoading}
-            variant="destructive"
-            onClick={async () => {
-              const { error } = await signOut({
-                fetchOptions: {
-                  onRequest: () => {
-                    setIsLoading(true)
-                  },
-                  onSuccess: () => {
-                    setIsLoading(false)
-                    void navigate({ to: '/sign-in' })
-                  },
-                  onError: () => {
-                    setIsLoading(false)
-                  },
-                },
-              })
-
-              if (error) {
-                toast.error(error.message || 'An unexpected error occurred.')
-              }
-            }}
-          >
-            Sign Out
-            {isLoading ? <Spinner className="ml-auto" /> : <LogOutIcon className="ml-auto" />}
-          </DropdownMenuItem>
+          <SignOutButton />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
