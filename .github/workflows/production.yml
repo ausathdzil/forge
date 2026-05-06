@@ -96,7 +96,7 @@ jobs:
 
             if [ "$RUN_MIGRATIONS" = "true" ]; then
               vp install --frozen-lockfile
-              vpx drizzle-kit migrate
+              vp run db:migrate
             else
               echo "Skipping install + migrations (no drizzle-related changes)."
             fi
