@@ -16,6 +16,7 @@ import { Route as ProtectedProfileRouteImport } from './routes/_protected/profil
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ProtectedWorkoutPublicIdRouteImport } from './routes/_protected/workout.$publicId'
 
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
@@ -50,12 +51,19 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedWorkoutPublicIdRoute =
+  ProtectedWorkoutPublicIdRouteImport.update({
+    id: '/workout/$publicId',
+    path: '/workout/$publicId',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/profile': typeof ProtectedProfileRoute
+  '/workout/$publicId': typeof ProtectedWorkoutPublicIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
@@ -63,6 +71,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/profile': typeof ProtectedProfileRoute
+  '/workout/$publicId': typeof ProtectedWorkoutPublicIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -73,13 +82,26 @@ export interface FileRoutesById {
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_protected/profile': typeof ProtectedProfileRoute
+  '/_protected/workout/$publicId': typeof ProtectedWorkoutPublicIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/sign-up' | '/profile' | '/api/auth/$'
+  fullPaths:
+    | '/'
+    | '/sign-in'
+    | '/sign-up'
+    | '/profile'
+    | '/workout/$publicId'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/profile' | '/api/auth/$'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/sign-up'
+    | '/profile'
+    | '/workout/$publicId'
+    | '/api/auth/$'
   id:
     | '__root__'
     | '/'
@@ -88,6 +110,7 @@ export interface FileRouteTypes {
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/_protected/profile'
+    | '/_protected/workout/$publicId'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
@@ -149,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/workout/$publicId': {
+      id: '/_protected/workout/$publicId'
+      path: '/workout/$publicId'
+      fullPath: '/workout/$publicId'
+      preLoaderRoute: typeof ProtectedWorkoutPublicIdRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
@@ -168,10 +198,12 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface ProtectedRouteChildren {
   ProtectedProfileRoute: typeof ProtectedProfileRoute
+  ProtectedWorkoutPublicIdRoute: typeof ProtectedWorkoutPublicIdRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedProfileRoute: ProtectedProfileRoute,
+  ProtectedWorkoutPublicIdRoute: ProtectedWorkoutPublicIdRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

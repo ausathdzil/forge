@@ -30,3 +30,13 @@ export async function createWorkout(title: string, userId: string) {
 
   return newWorkout
 }
+
+export async function findWorkoutByPublicId(publicId: string) {
+  const [workoutData] = await db
+    .select()
+    .from(workout)
+    .where(eq(workout.publicId, publicId))
+    .limit(1)
+
+  return workoutData
+}

@@ -17,9 +17,9 @@ export function StartButton() {
   const handleStartSession = async () => {
     try {
       setIsLoading(true)
-      await startWorkoutSession({ data: { title: 'Workout name' } })
+      const workout = await startWorkoutSession({ data: { title: 'Workout name' } })
       void router.invalidate()
-      void navigate({ to: '/' })
+      void navigate({ to: '/workout/$publicId', params: { publicId: workout.publicId } })
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'An unexpected error occurred.')
     } finally {
