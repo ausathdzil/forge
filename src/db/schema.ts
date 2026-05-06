@@ -1,5 +1,16 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, text, timestamp, boolean, index } from 'drizzle-orm/pg-core'
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  index,
+  bigint,
+  varchar,
+  uniqueIndex,
+  integer,
+} from 'drizzle-orm/pg-core'
+import { nanoid } from 'nanoid'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -73,6 +84,104 @@ export const verification = pgTable(
   (table) => [index('verification_identifier_idx').on(table.identifier)],
 )
 
+export const workout = pgTable(
+  'workout',
+  {
+    id: bigint('id', { mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),
+    publicId: varchar('public_id', { length: 12 })
+      .$defaultFn(() => nanoid(12))
+      .notNull()
+      .unique(),
+    title: varchar('title', { length: 255 }).notNull(),
+    startedAt: timestamp('started_at', { withTimezone: true }).defaultNow().notNull(),
+    finishedAt: timestamp('finished_at', { withTimezone: true }),
+    isActive: boolean('is_active').default(true).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+  },
+  (table) => [index('workout_user_id_idx').on(table.userId)],
+)
+
+export const exercise = pgTable(
+  'exercise',
+  {
+    id: bigint('id', { mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),
+    publicId: varchar('public_id', { length: 12 })
+      .$defaultFn(() => nanoid(12))
+      .notNull()
+      .unique(),
+    name: varchar('name', { length: 255 }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+  },
+  (table) => [index('exercise_user_name_idx').on(table.userId, table.name)],
+)
+
+export const workoutExercise = pgTable(
+  'workout_exercise',
+  {
+    id: bigint('id', { mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),
+    publicId: varchar('public_id', { length: 12 })
+      .$defaultFn(() => nanoid(12))
+      .notNull()
+      .unique(),
+    order: integer('order').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    workoutId: bigint('workout_id', { mode: 'number' })
+      .notNull()
+      .references(() => workout.id, { onDelete: 'cascade' }),
+    exerciseId: bigint('exercise_id', { mode: 'number' })
+      .notNull()
+      .references(() => exercise.id, { onDelete: 'cascade' }),
+  },
+  (table) => [
+    uniqueIndex('workout_exercise_workout_id_order_uniq').on(table.workoutId, table.order),
+    index('workout_exercise_exercise_id_idx').on(table.exerciseId),
+  ],
+)
+
+export const set = pgTable(
+  'set',
+  {
+    id: bigint('id', { mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),
+    publicId: varchar('public_id', { length: 12 })
+      .$defaultFn(() => nanoid(12))
+      .notNull()
+      .unique(),
+    reps: integer('reps').notNull(),
+    weight: integer('weight').notNull(),
+    order: integer('order').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    workoutExerciseId: bigint('workout_exercise_id', { mode: 'number' })
+      .notNull()
+      .references(() => workoutExercise.id, { onDelete: 'cascade' }),
+  },
+  (table) => [
+    index('set_workout_exercise_id_idx').on(table.workoutExerciseId),
+    uniqueIndex('set_workout_exercise_id_order_uniq').on(table.workoutExerciseId, table.order),
+  ],
+)
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
@@ -89,5 +198,40 @@ export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
     references: [user.id],
+  }),
+}))
+
+export const workoutRelations = relations(workout, ({ one, many }) => ({
+  user: one(user, {
+    fields: [workout.userId],
+    references: [user.id],
+  }),
+  workoutExercises: many(workoutExercise),
+}))
+
+export const exerciseRelations = relations(exercise, ({ one, many }) => ({
+  user: one(user, {
+    fields: [exercise.userId],
+    references: [user.id],
+  }),
+  workoutExercises: many(workoutExercise),
+}))
+
+export const workoutExerciseRelations = relations(workoutExercise, ({ one, many }) => ({
+  workout: one(workout, {
+    fields: [workoutExercise.workoutId],
+    references: [workout.id],
+  }),
+  exercise: one(exercise, {
+    fields: [workoutExercise.exerciseId],
+    references: [exercise.id],
+  }),
+  sets: many(set),
+}))
+
+export const setRelations = relations(set, ({ one }) => ({
+  workoutExercise: one(workoutExercise, {
+    fields: [set.workoutExerciseId],
+    references: [workoutExercise.id],
   }),
 }))
