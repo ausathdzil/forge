@@ -44,7 +44,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <ThemeProvider defaultTheme="system" storageKey="theme">
           {children}
-          <Toaster />
+          <Toaster richColors />
         </ThemeProvider>
         <TanStackDevtools
           config={{
