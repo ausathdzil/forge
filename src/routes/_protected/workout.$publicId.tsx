@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ChevronLeftIcon } from 'lucide-react'
 
-import { Header, HeaderContent } from '#/components/header'
-import { Heading } from '#/components/typography'
-import { WorkoutDuration } from '#/components/workout/workout-duration'
 import { getWorkoutByPublicId } from '#/functions/workout.functions'
+import { Header, HeaderContent } from '#components/header'
+import { Heading } from '#components/typography'
+import { WorkoutDuration } from '#components/workout/workout-duration'
 
 export const Route = createFileRoute('/_protected/workout/$publicId')({
   loader: async ({ params }) => {

@@ -3,7 +3,7 @@ import { LogOutIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { signOut } from '#/lib/auth-client'
+import { signOut } from '#lib/auth-client'
 
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 import { Spinner } from '../ui/spinner'

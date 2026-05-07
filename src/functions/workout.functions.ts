@@ -2,7 +2,7 @@ import { notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { setResponseStatus } from '@tanstack/react-start/server'
 
-import { ensureSession } from '#/lib/auth.functions'
+import { ensureSession } from '#lib/auth.functions'
 
 import { GetWorkoutSchema, StartWorkoutSchema } from './schemas'
 import { createWorkout, findWorkoutByPublicId } from './workout.server'

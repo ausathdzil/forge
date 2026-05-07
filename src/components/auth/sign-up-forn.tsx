@@ -3,17 +3,17 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { EyeOffIcon, EyeIcon, AlertCircleIcon } from 'lucide-react'
 import { useState } from 'react'
 
-import { Alert, AlertTitle } from '#/components/ui/alert'
-import { Button } from '#/components/ui/button'
-import { Field, FieldGroup, FieldLabel, FieldDescription, FieldError } from '#/components/ui/field'
-import { Input } from '#/components/ui/input'
+import { Alert, AlertTitle } from '#components/ui/alert'
+import { Button } from '#components/ui/button'
+import { Field, FieldGroup, FieldLabel, FieldDescription, FieldError } from '#components/ui/field'
+import { Input } from '#components/ui/input'
 import {
   InputGroup,
   InputGroupInput,
   InputGroupAddon,
   InputGroupButton,
-} from '#/components/ui/input-group'
-import { signUp } from '#/lib/auth-client'
+} from '#components/ui/input-group'
+import { signUp } from '#lib/auth-client'
 
 import { signupFormSchema } from './auth-form-schema'
 

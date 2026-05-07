@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { HomeIcon, UserCircle2Icon } from 'lucide-react'
 
-import type { User } from '#/lib/auth-client'
+import type { User } from '#lib/auth-client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {

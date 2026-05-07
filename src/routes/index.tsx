@@ -4,13 +4,13 @@ import { format } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import { AnvilIcon } from 'lucide-react'
 
-import { Header, HeaderContent } from '#/components/header'
-import { SessionHistory } from '#/components/home/session-history'
-import { StartButton } from '#/components/home/start-button'
-import { UserButton } from '#/components/home/user-button'
-import { Heading, Subheading } from '#/components/typography'
-import { Button } from '#/components/ui/button'
-import { Separator } from '#/components/ui/separator'
+import { Header, HeaderContent } from '#components/header'
+import { SessionHistory } from '#components/home/session-history'
+import { StartButton } from '#components/home/start-button'
+import { UserButton } from '#components/home/user-button'
+import { Heading, Subheading } from '#components/typography'
+import { Button } from '#components/ui/button'
+import { Separator } from '#components/ui/separator'
 
 export const Route = createFileRoute('/')({ component: Home })
 

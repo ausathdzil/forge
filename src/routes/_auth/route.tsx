@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import { AnvilIcon } from 'lucide-react'
 
-import { Button } from '#/components/ui/button'
+import { Button } from '#components/ui/button'
 
 export const Route = createFileRoute('/_auth')({
   component: AuthLayout,

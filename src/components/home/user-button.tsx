@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 
-import { useSession } from '#/lib/auth-client'
+import { useSession } from '#lib/auth-client'
 
 import { Button } from '../ui/button'
 import { Skeleton } from '../ui/skeleton'

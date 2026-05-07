@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { SignInForm } from '#/components/auth/sign-in-form'
-import { Heading, Muted } from '#/components/typography'
+import { SignInForm } from '#components/auth/sign-in-form'
+import { Heading, Muted } from '#components/typography'
 
 export const Route = createFileRoute('/_auth/sign-in')({
   component: SignIn,

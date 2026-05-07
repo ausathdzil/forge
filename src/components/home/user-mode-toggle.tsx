@@ -1,12 +1,12 @@
 import { ComputerIcon, MoonIcon, SunIcon } from 'lucide-react'
 
-import { useTheme } from '#/components/theme-provider'
+import { useTheme } from '#components/theme-provider'
 import {
   DropdownMenuItem,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from '#/components/ui/dropdown-menu'
+} from '#components/ui/dropdown-menu'
 
 export function UserModeToggle() {
   const { setTheme } = useTheme()
