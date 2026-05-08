@@ -7,3 +7,7 @@ export const StartWorkoutSchema = z.object({
 export const GetWorkoutSchema = z.object({
   publicId: z.string().min(1, 'Public ID is required').max(12, 'Public ID must be 12 characters'),
 })
+
+export const GetWorkoutHistorySchema = z.object({
+  limit: z.int().positive().max(100).optional(),
+})

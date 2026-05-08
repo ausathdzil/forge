@@ -4,8 +4,8 @@ import { setResponseStatus } from '@tanstack/react-start/server'
 
 import { ensureSession } from '#lib/auth.functions'
 
-import { GetWorkoutSchema, StartWorkoutSchema } from './schemas'
-import { createWorkout, findWorkoutByPublicId } from './workout.server'
+import { GetWorkoutHistorySchema, GetWorkoutSchema, StartWorkoutSchema } from './schemas'
+import { createWorkout, findWorkoutByPublicId, getWorkouts } from './workout.server'
 
 export const startWorkoutSession = createServerFn({ method: 'POST' })
   .inputValidator(StartWorkoutSchema)
@@ -33,4 +33,13 @@ export const getWorkoutByPublicId = createServerFn({ method: 'GET' })
     }
 
     return workout
+  })
+
+export const getWorkoutHistory = createServerFn({ method: 'GET' })
+  .inputValidator(GetWorkoutHistorySchema)
+  .handler(async ({ data }) => {
+    const session = await ensureSession()
+    const workouts = await getWorkouts(session.user.id, data.limit)
+
+    return workouts
   })

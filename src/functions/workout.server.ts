@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 
 import { db } from '#/db'
 import { workout } from '#/db/schema'
@@ -39,4 +39,13 @@ export async function findWorkoutByPublicId(publicId: string) {
     .limit(1)
 
   return workoutData
+}
+
+export async function getWorkouts(userId: string, limit = 10) {
+  return await db
+    .select()
+    .from(workout)
+    .where(eq(workout.userId, userId))
+    .orderBy(desc(workout.createdAt))
+    .limit(limit)
 }
