@@ -9,5 +9,6 @@ export const GetWorkoutSchema = z.object({
 })
 
 export const GetWorkoutHistorySchema = z.object({
+  userId: z.string(),
   limit: z.int().positive().max(100).optional(),
 })

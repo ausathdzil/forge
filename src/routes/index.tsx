@@ -24,8 +24,8 @@ export const Route = createFileRoute('/')({
 
     return { user: session.user }
   },
-  loader: async () => {
-    return await getWorkoutHistory({ data: {} })
+  loader: async ({ context }) => {
+    return await getWorkoutHistory({ data: { userId: context.user.id } })
   },
   component: Home,
 })

@@ -38,8 +38,7 @@ export const getWorkoutByPublicId = createServerFn({ method: 'GET' })
 export const getWorkoutHistory = createServerFn({ method: 'GET' })
   .inputValidator(GetWorkoutHistorySchema)
   .handler(async ({ data }) => {
-    const session = await ensureSession()
-    const workouts = await getWorkouts(session.user.id, data.limit)
+    const workouts = await getWorkouts(data.userId, data.limit)
 
     return workouts
   })
