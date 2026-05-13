@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
-import { format } from 'date-fns'
+import { formatDate } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import { AnvilIcon } from 'lucide-react'
 
@@ -32,8 +32,6 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const today = new Date()
-  const day = format(today, 'EEEE', { locale: enUS })
-  const date = format(today, 'd MMMM', { locale: enUS })
 
   const { user } = Route.useRouteContext()
   const workouts = Route.useLoaderData()
@@ -51,8 +49,8 @@ function Home() {
       </Header>
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 p-5">
         <div className="text-center">
-          <Heading>{day}</Heading>
-          <Subheading>{date}</Subheading>
+          <Heading>{formatDate(today, 'EEEE', { locale: enUS })}</Heading>
+          <Subheading>{formatDate(today, 'd MMMM', { locale: enUS })}</Subheading>
         </div>
         <StartButton userId={user.id} />
         <Separator />
