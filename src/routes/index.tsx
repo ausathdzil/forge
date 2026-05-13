@@ -35,6 +35,7 @@ function Home() {
   const day = format(today, 'EEEE', { locale: enUS })
   const date = format(today, 'd MMMM', { locale: enUS })
 
+  const { user } = Route.useRouteContext()
   const workouts = Route.useLoaderData()
 
   return (
@@ -53,7 +54,7 @@ function Home() {
           <Heading>{day}</Heading>
           <Subheading>{date}</Subheading>
         </div>
-        <StartButton />
+        <StartButton userId={user.id} />
         <Separator />
         <WorkoutHistory workouts={workouts} />
       </main>

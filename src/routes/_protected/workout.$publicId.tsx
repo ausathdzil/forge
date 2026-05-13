@@ -7,8 +7,10 @@ import { Heading } from '#components/typography'
 import { WorkoutDuration } from '#components/workout/workout-duration'
 
 export const Route = createFileRoute('/_protected/workout/$publicId')({
-  loader: async ({ params }) => {
-    const workout = await getWorkoutByPublicId({ data: { publicId: params.publicId } })
+  loader: async ({ params, context }) => {
+    const workout = await getWorkoutByPublicId({
+      data: { userId: context.user.id, publicId: params.publicId },
+    })
     return { workout }
   },
   component: Workout,

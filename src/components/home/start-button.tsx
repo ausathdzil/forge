@@ -8,7 +8,7 @@ import { startWorkoutSession } from '#/functions/workout.functions'
 import { Button } from '../ui/button'
 import { Spinner } from '../ui/spinner'
 
-export function StartButton() {
+export function StartButton({ userId }: { userId: string }) {
   const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
@@ -17,7 +17,7 @@ export function StartButton() {
   const handleStartSession = async () => {
     try {
       setIsLoading(true)
-      const workout = await startWorkoutSession({ data: { title: 'Workout name' } })
+      const workout = await startWorkoutSession({ data: { userId, title: 'Workout name' } })
       void router.invalidate()
       void navigate({ to: '/workout/$publicId', params: { publicId: workout.publicId } })
     } catch (error) {

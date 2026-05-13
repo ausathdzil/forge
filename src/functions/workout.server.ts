@@ -3,7 +3,7 @@ import { and, desc, eq } from 'drizzle-orm'
 import { db } from '#/db'
 import { workout } from '#/db/schema'
 
-export async function createWorkout(title: string, userId: string) {
+export async function createWorkout(userId: string, title: string) {
   const [activeWorkout] = await db
     .select()
     .from(workout)
