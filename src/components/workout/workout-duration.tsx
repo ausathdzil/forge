@@ -1,5 +1,5 @@
 import { differenceInSeconds } from 'date-fns'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { formatHhMmSs } from '#lib/workout/utils'
 
@@ -11,26 +11,28 @@ interface WorkoutDurationProps {
 }
 
 export function WorkoutDuration({ startedAt, finishedAt }: WorkoutDurationProps) {
-  const [now, setNow] = useState(() => new Date())
-  const startedAtDate = new Date(startedAt)
-  const finishedAtDate = finishedAt ? new Date(finishedAt) : null
+  const startedAtTime = new Date(startedAt).getTime()
+  const finishedAtTime = finishedAt ? new Date(finishedAt).getTime() : null
+  const [now, setNow] = useState(() => new Date(finishedAtTime ?? startedAtTime))
 
   useEffect(() => {
-    if (finishedAtDate) return
+    if (finishedAtTime) return
 
-    const intervalId = setInterval(() => {
+    setNow(new Date())
+
+    const id = setInterval(() => {
       setNow(new Date())
     }, 1000)
 
-    return () => clearInterval(intervalId)
-  }, [finishedAtDate])
+    return () => clearInterval(id)
+  }, [finishedAtTime])
 
-  const currentDuration = Math.max(0, differenceInSeconds(finishedAtDate ?? now, startedAtDate))
+  const currentDuration = Math.max(0, differenceInSeconds(finishedAtTime ?? now, startedAtTime))
 
   return (
     <Large>
       <span className="font-normal text-muted-foreground">Duration:</span>{' '}
-      {formatHhMmSs(currentDuration)}
+      <span suppressHydrationWarning>{formatHhMmSs(currentDuration)}</span>
     </Large>
   )
 }
