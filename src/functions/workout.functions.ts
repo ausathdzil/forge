@@ -3,7 +3,12 @@ import { createServerFn } from '@tanstack/react-start'
 import { setResponseStatus } from '@tanstack/react-start/server'
 
 import { GetWorkoutHistorySchema, GetWorkoutSchema, StartWorkoutSchema } from './schemas'
-import { createWorkout, findWorkoutByPublicId, getWorkouts } from './workout.server'
+import {
+  createWorkout,
+  findWorkoutByPublicId,
+  getWorkouts,
+  updateWorkoutStatus,
+} from './workout.server'
 
 export const startWorkoutSession = createServerFn({ method: 'POST' })
   .inputValidator(StartWorkoutSchema)
@@ -23,7 +28,8 @@ export const getWorkoutByPublicId = createServerFn({ method: 'GET' })
     }
 
     if (workout.userId !== data.userId) {
-      throw new Error('Unauthorized')
+      setResponseStatus(403)
+      throw new Error('Forbidden')
     }
 
     return workout
@@ -34,4 +40,21 @@ export const getWorkoutHistory = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
     const workouts = await getWorkouts(data.userId, data.limit)
     return workouts
+  })
+
+export const stopWorkoutSession = createServerFn({ method: 'POST' })
+  .inputValidator(GetWorkoutSchema)
+  .handler(async ({ data }) => {
+    const workout = await getWorkoutByPublicId({
+      data: { publicId: data.publicId, userId: data.userId },
+    })
+
+    if (!workout.isActive) {
+      setResponseStatus(400)
+      throw new Error('Workout is already stopped')
+    }
+
+    const stoppedWorkout = await updateWorkoutStatus(data.userId, data.publicId)
+
+    return stoppedWorkout
   })

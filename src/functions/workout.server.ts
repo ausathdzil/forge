@@ -49,3 +49,16 @@ export async function getWorkouts(userId: string, limit = 10) {
     .orderBy(desc(workout.createdAt))
     .limit(limit)
 }
+
+export async function updateWorkoutStatus(userId: string, publicId: string) {
+  const [stoppedWorkout] = await db
+    .update(workout)
+    .set({
+      isActive: false,
+      finishedAt: new Date(),
+    })
+    .where(and(eq(workout.publicId, publicId), eq(workout.userId, userId)))
+    .returning()
+
+  return stoppedWorkout
+}

@@ -4,6 +4,7 @@ import { ChevronLeftIcon } from 'lucide-react'
 import { getWorkoutByPublicId } from '#/functions/workout.functions'
 import { Header, HeaderContent } from '#components/header'
 import { Heading } from '#components/typography'
+import { StopButton } from '#components/workout/stop-button'
 import { WorkoutDuration } from '#components/workout/workout-duration'
 
 export const Route = createFileRoute('/_protected/workout/$publicId')({
@@ -35,6 +36,11 @@ function Workout() {
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 p-5">
         <Heading>{workout.title}</Heading>
         <WorkoutDuration startedAt={workout.startedAt} finishedAt={workout.finishedAt} />
+        <StopButton
+          userId={workout.userId}
+          publicId={workout.publicId}
+          isActive={workout.isActive}
+        />
       </main>
     </div>
   )
