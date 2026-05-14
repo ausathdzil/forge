@@ -23,7 +23,10 @@ function Workout() {
     <div className="flex min-h-screen flex-col">
       <Header className="border-b">
         <HeaderContent>
-          <Link className="flex min-h-11 items-center gap-1 text-sm font-medium" to="/">
+          <Link
+            className="flex min-h-11 items-center gap-1 text-sm font-medium hover:text-warning"
+            to="/"
+          >
             <ChevronLeftIcon className="size-4" />
             Back
           </Link>
@@ -32,7 +35,6 @@ function Workout() {
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 p-5">
         <Heading>{workout.title}</Heading>
         <WorkoutDuration startedAt={workout.startedAt} finishedAt={workout.finishedAt} />
-        <pre>{JSON.stringify(workout, null, 2)}</pre>
       </main>
     </div>
   )

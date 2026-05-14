@@ -28,7 +28,7 @@ export function WorkoutHistory({ workouts }: { workouts: (typeof workout.$inferS
             variant="outline"
           >
             <ItemMedia variant="icon">
-              {workout.isActive ? <CirclePlayIcon color="var(--chart-1)" /> : <HistoryIcon />}
+              {workout.isActive ? <CirclePlayIcon color="var(--warning)" /> : <HistoryIcon />}
             </ItemMedia>
             <ItemContent>
               <ItemTitle>{workout.title}</ItemTitle>
