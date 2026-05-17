@@ -34,8 +34,7 @@ export function SignUpForm() {
     },
     onSubmit: async ({ value }) => {
       setServerError(null)
-
-      const { error } = await signUp.email(value, {
+      await signUp.email(value, {
         onRequest: () => {
           setIsLoading(true)
         },
@@ -43,14 +42,11 @@ export function SignUpForm() {
           setIsLoading(false)
           void navigate({ to: '/' })
         },
-        onError: () => {
+        onError: (ctx) => {
           setIsLoading(false)
+          setServerError(ctx.error.message || 'An unexpected error occurred.')
         },
       })
-
-      if (error) {
-        setServerError(error.message || 'An unexpected error occurred.')
-      }
     },
     onSubmitInvalid() {
       const $invalidInput = document.querySelector('[aria-invalid="true"]')
@@ -69,9 +65,8 @@ export function SignUpForm() {
       }}
     >
       <FieldGroup>
-        <form.Field
-          name="name"
-          children={(field) => {
+        <form.Field name="name" validators={{ onBlur: signupFormSchema.shape.name }}>
+          {(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
             return (
               <Field data-invalid={isInvalid}>
@@ -94,10 +89,9 @@ export function SignUpForm() {
               </Field>
             )
           }}
-        />
-        <form.Field
-          name="email"
-          children={(field) => {
+        </form.Field>
+        <form.Field name="email" validators={{ onBlur: signupFormSchema.shape.email }}>
+          {(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
             return (
               <Field data-invalid={isInvalid}>
@@ -119,10 +113,9 @@ export function SignUpForm() {
               </Field>
             )
           }}
-        />
-        <form.Field
-          name="password"
-          children={(field) => {
+        </form.Field>
+        <form.Field name="password" validators={{ onChange: signupFormSchema.shape.password }}>
+          {(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
             return (
               <Field data-invalid={isInvalid}>
@@ -158,7 +151,7 @@ export function SignUpForm() {
               </Field>
             )
           }}
-        />
+        </form.Field>
         <Field>
           <Button type="submit" disabled={isLoading}>
             Sign Up

@@ -35,8 +35,7 @@ export function SignInForm() {
     },
     onSubmit: async ({ value }) => {
       setServerError(null)
-
-      const { error } = await signIn.email(value, {
+      await signIn.email(value, {
         onRequest: () => {
           setIsLoading(true)
         },
@@ -44,14 +43,11 @@ export function SignInForm() {
           setIsLoading(false)
           void navigate({ to: '/' })
         },
-        onError: () => {
+        onError: (ctx) => {
           setIsLoading(false)
+          setServerError(ctx.error.message || 'An unexpected error occurred.')
         },
       })
-
-      if (error) {
-        setServerError(error.message || 'An unexpected error occurred.')
-      }
     },
     onSubmitInvalid() {
       const $invalidInput = document.querySelector('[aria-invalid="true"]')
@@ -70,9 +66,8 @@ export function SignInForm() {
       }}
     >
       <FieldGroup>
-        <form.Field
-          name="email"
-          children={(field) => {
+        <form.Field name="email" validators={{ onBlur: signinFormSchema.shape.email }}>
+          {(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
             return (
               <Field data-invalid={isInvalid}>
@@ -94,10 +89,9 @@ export function SignInForm() {
               </Field>
             )
           }}
-        />
-        <form.Field
-          name="password"
-          children={(field) => {
+        </form.Field>
+        <form.Field name="password" validators={{ onBlur: signinFormSchema.shape.password }}>
+          {(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
             return (
               <Field data-invalid={isInvalid}>
@@ -132,10 +126,9 @@ export function SignInForm() {
               </Field>
             )
           }}
-        />
-        <form.Field
-          name="rememberMe"
-          children={(field) => {
+        </form.Field>
+        <form.Field name="rememberMe" validators={{ onBlur: signinFormSchema.shape.rememberMe }}>
+          {(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
             return (
               <Field data-invalid={isInvalid} orientation="horizontal">
@@ -153,7 +146,7 @@ export function SignInForm() {
               </Field>
             )
           }}
-        />
+        </form.Field>
         <Field>
           <Button type="submit" disabled={isLoading}>
             Sign In
