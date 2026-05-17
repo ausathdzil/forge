@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form-start'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 
 import { Alert, AlertTitle } from '#components/ui/alert'
 import { Button } from '#components/ui/button'
@@ -19,8 +19,8 @@ import { signIn } from '#lib/auth-client'
 import { signinFormSchema } from './auth-form-schema'
 
 export function SignInForm() {
+  const [isPending, startTransition] = useTransition()
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
   const navigate = useNavigate()
 
@@ -33,20 +33,17 @@ export function SignInForm() {
     validators: {
       onSubmit: signinFormSchema,
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: ({ value }) => {
       setServerError(null)
-      await signIn.email(value, {
-        onRequest: () => {
-          setIsLoading(true)
-        },
-        onSuccess: () => {
-          setIsLoading(false)
-          void navigate({ to: '/' })
-        },
-        onError: (ctx) => {
-          setIsLoading(false)
-          setServerError(ctx.error.message || 'An unexpected error occurred.')
-        },
+      startTransition(async () => {
+        await signIn.email(value, {
+          onSuccess: () => {
+            void navigate({ to: '/' })
+          },
+          onError: (ctx) => {
+            setServerError(ctx.error.message || 'An unexpected error occurred.')
+          },
+        })
       })
     },
     onSubmitInvalid() {
@@ -148,7 +145,7 @@ export function SignInForm() {
           }}
         </form.Field>
         <Field>
-          <Button type="submit" disabled={isLoading}>
+          <Button type="submit" disabled={isPending}>
             Sign In
           </Button>
           <FieldDescription className="text-center">

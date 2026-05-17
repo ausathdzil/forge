@@ -1,6 +1,6 @@
 import { useRouter } from '@tanstack/react-router'
 import { PauseIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useTransition } from 'react'
 import { toast } from 'sonner'
 
 import { stopWorkoutSession } from '#/functions/workout.functions'
@@ -15,31 +15,29 @@ interface StopButtonProps {
 }
 
 export function StopButton({ userId, publicId, isActive }: StopButtonProps) {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
+  const { invalidate } = useRouter()
 
-  const router = useRouter()
-
-  const handleStartSession = async () => {
-    try {
-      setIsLoading(true)
-      await stopWorkoutSession({ data: { userId, publicId } })
-      void router.invalidate()
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred.')
-    } finally {
-      setIsLoading(false)
-    }
+  const handleStartSession = () => {
+    startTransition(async () => {
+      try {
+        await stopWorkoutSession({ data: { userId, publicId } })
+        void invalidate()
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'An unexpected error occurred.')
+      }
+    })
   }
 
   return (
     <Button
       onClick={handleStartSession}
-      disabled={isLoading || !isActive}
+      disabled={isPending || !isActive}
       className="w-fit"
       size="lg"
       variant="destructive"
     >
-      {isLoading ? <Spinner /> : <PauseIcon />}
+      {isPending ? <Spinner /> : <PauseIcon />}
       Stop Session
     </Button>
   )
