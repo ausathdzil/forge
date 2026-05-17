@@ -9,19 +9,18 @@ import { Button } from '../ui/button'
 import { Spinner } from '../ui/spinner'
 
 interface StopButtonProps {
-  userId: string
   publicId: string
   isActive: boolean
 }
 
-export function StopButton({ userId, publicId, isActive }: StopButtonProps) {
+export function StopButton({ publicId, isActive }: StopButtonProps) {
   const [isPending, startTransition] = useTransition()
   const { invalidate } = useRouter()
 
   const handleStartSession = () => {
     startTransition(async () => {
       try {
-        await stopWorkoutSession({ data: { userId, publicId } })
+        await stopWorkoutSession({ data: { publicId } })
         void invalidate()
       } catch (error) {
         toast.error(error instanceof Error ? error.message : 'An unexpected error occurred.')

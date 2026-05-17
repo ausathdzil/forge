@@ -42,11 +42,7 @@ function Workout() {
             <WorkoutDuration startedAt={workout.startedAt} finishedAt={workout.finishedAt} />
           </ClientOnly>
         </Large>
-        <StopButton
-          userId={workout.userId}
-          publicId={workout.publicId}
-          isActive={workout.isActive}
-        />
+        <StopButton publicId={workout.publicId} isActive={workout.isActive} />
       </main>
     </div>
   )

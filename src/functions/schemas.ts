@@ -14,3 +14,7 @@ export const GetWorkoutHistorySchema = z.object({
   userId: z.string().min(1, 'User ID is required'),
   limit: z.int().positive().max(100).optional(),
 })
+
+export const StopWorkoutSchema = z.object({
+  publicId: z.string().min(1, 'Public ID is required').max(12, 'Public ID must be 12 characters'),
+})
