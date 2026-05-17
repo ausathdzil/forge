@@ -38,7 +38,7 @@ function Workout() {
         <Heading>{workout.title}</Heading>
         <Large>
           <span className="font-normal text-muted-foreground">Duration:</span>{' '}
-          <ClientOnly fallback={<Skeleton className="h-5.5 w-12.75" />}>
+          <ClientOnly fallback={<Skeleton className="inline-block h-3.5 w-12.75" />}>
             <WorkoutDuration startedAt={workout.startedAt} finishedAt={workout.finishedAt} />
           </ClientOnly>
         </Large>
