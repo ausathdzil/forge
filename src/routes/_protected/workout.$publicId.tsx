@@ -1,9 +1,10 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { ClientOnly, createFileRoute, Link } from '@tanstack/react-router'
 import { ChevronLeftIcon } from 'lucide-react'
 
 import { getWorkoutByPublicId } from '#/functions/workout.functions'
 import { Header, HeaderContent } from '#components/header'
-import { Heading } from '#components/typography'
+import { Heading, Large } from '#components/typography'
+import { Skeleton } from '#components/ui/skeleton'
 import { StopButton } from '#components/workout/stop-button'
 import { WorkoutDuration } from '#components/workout/workout-duration'
 
@@ -35,7 +36,12 @@ function Workout() {
       </Header>
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 p-5">
         <Heading>{workout.title}</Heading>
-        <WorkoutDuration startedAt={workout.startedAt} finishedAt={workout.finishedAt} />
+        <Large>
+          <span className="font-normal text-muted-foreground">Duration:</span>{' '}
+          <ClientOnly fallback={<Skeleton className="h-5.5 w-12.75" />}>
+            <WorkoutDuration startedAt={workout.startedAt} finishedAt={workout.finishedAt} />
+          </ClientOnly>
+        </Large>
         <StopButton
           userId={workout.userId}
           publicId={workout.publicId}

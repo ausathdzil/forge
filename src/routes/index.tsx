@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { ClientOnly, createFileRoute, redirect } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { formatDate } from 'date-fns'
 import { enUS } from 'date-fns/locale'
@@ -12,6 +12,7 @@ import { WorkoutHistory } from '#components/home/workout-history'
 import { Heading, Subheading } from '#components/typography'
 import { Button } from '#components/ui/button'
 import { Separator } from '#components/ui/separator'
+import { Skeleton } from '#components/ui/skeleton'
 import { getSession } from '#lib/auth.functions'
 
 export const Route = createFileRoute('/')({
@@ -54,8 +55,24 @@ function Home() {
         </div>
         <StartButton userId={user.id} />
         <Separator />
-        <WorkoutHistory workouts={workouts} />
+        <div className="flex flex-col gap-4">
+          <Subheading className="text-center">History</Subheading>
+          <ClientOnly fallback={<WorkoutHistorySkeleton />}>
+            <WorkoutHistory workouts={workouts} />
+          </ClientOnly>
+        </div>
       </main>
+    </div>
+  )
+}
+
+function WorkoutHistorySkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <Skeleton className="h-[96.85px] w-full" />
+      <Skeleton className="h-[96.85px] w-full" />
+      <Skeleton className="h-[96.85px] w-full" />
+      <Skeleton className="h-[96.85px] w-full" />
     </div>
   )
 }
