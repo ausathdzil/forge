@@ -89,6 +89,12 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
 
+      - name: Run migrations
+        if: ${{ steps.migrate_changes.outputs.migrate == 'true' }}
+        env:
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@${{ secrets.TAILNET_HOST }}:5432/${{ secrets.POSTGRES_DB }}
+        run: vp run db:migrate
+
       - name: Deploy to Azure VM
         env:
           HOST: ${{ secrets.TAILNET_HOST }}
