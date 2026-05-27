@@ -1,6 +1,6 @@
 services:
   web:
-    container_name: forge-app
+    container_name: forge-web
     image: ghcr.io/ausathdzil/forge:latest
     ports:
       - '3000:3000'
@@ -29,22 +29,3 @@ services:
       start_period: 30s
     ports:
       - '5432:5432'
-
-  caddy:
-    image: caddy:2.11.3-alpine
-    restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-    ports:
-      - '80:80'
-      - '443:443'
-      - '443:443/UDP'
-    volumes:
-      - $PWD/conf:/etc/caddy
-      - $PWD/site:/srv
-      - caddy_data:/data
-      - caddy_config:/config
-
-volumes:
-  caddy_data:
-  caddy_config:
