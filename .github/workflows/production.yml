@@ -99,7 +99,6 @@ jobs:
         env:
           HOST: ${{ secrets.TAILNET_HOST }}
           USERNAME: ${{ secrets.SSH_USER }}
-          RUN_MIGRATIONS: ${{ steps.migrate_changes.outputs.migrate == 'true' }}
         run: |
           ssh -o StrictHostKeyChecking=no $USERNAME@$HOST << EOF
             cd /srv/forge
