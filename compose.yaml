@@ -1,7 +1,7 @@
 services:
   web:
     container_name: forge-web
-    image: ghcr.io/ausathdzil/forge:latest
+    build: .
     ports:
       - '3000:3000'
     environment:
